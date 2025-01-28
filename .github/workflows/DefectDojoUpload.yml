@@ -1,0 +1,42 @@
+name: Import Semgrep to DefectDojo
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Download import script
+        run: |
+          curl -O https://raw.githubusercontent.com/r2c-CSE/semgrep-utilities/main/integrations/defectdojo/import_semgrep_to_defect_dojo.py
+
+      - name: Validate checksum
+        run: |
+          echo "${{ secrets.IMPORT_SEMGREP_TO_DEFECTDOJO_SHA_CHECKSUM }}" > sha-import-dd.tmp
+          shasum -a 256 -c sha-import-dd.tmp
+
+      - name: Import Semgrep scan to DefectDojo
+        run: |
+          python import_semgrep_to_defect_dojo.py --host ${{ secrets.DEFECTDOJO_URL }} --product ${{ secrets.PRODUCT }} --engagement semgrep --report report.json || true
+
+      - name: Set up environment variables
+        env:
+          DEFECT_DOJO_API_TOKEN: ${{ secrets.DEFECT_DOJO_API_TOKEN }}
