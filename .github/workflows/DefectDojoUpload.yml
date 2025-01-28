@@ -30,7 +30,7 @@ jobs:
 
       - name: Import Semgrep scan to DefectDojo
         run: |
-          python import_semgrep_to_defect_dojo.py --host ${{ secrets.DEFECTDOJO_URL }} --product ${{ secrets.PRODUCT }} --engagement semgrep --report report.json || true
+          python import_semgrep_to_defect_dojo.py --host ${{ secrets.DEFECTDOJO_URL }} --product semgrep ci --engagement semgrep --report report.json || true
 
       - name: Set up environment variables
         env:
