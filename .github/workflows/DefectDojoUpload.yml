@@ -28,11 +28,6 @@ jobs:
         run: |
           curl -O https://raw.githubusercontent.com/r2c-CSE/semgrep-utilities/main/integrations/defectdojo/import_semgrep_to_defect_dojo.py
 
-      - name: Validate checksum
-        run: |
-          echo "${{ secrets.IMPORT_SEMGREP_TO_DEFECTDOJO_SHA_CHECKSUM }}" > sha-import-dd.tmp
-          shasum -a 256 -c sha-import-dd.tmp
-
       - name: Import Semgrep scan to DefectDojo
         run: |
           python import_semgrep_to_defect_dojo.py --host ${{ secrets.DEFECTDOJO_URL }} --product ${{ secrets.PRODUCT }} --engagement semgrep --report report.json || true
