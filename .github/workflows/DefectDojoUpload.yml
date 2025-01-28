@@ -34,4 +34,4 @@ jobs:
 
       - name: Set up environment variables
         env:
-          DEFECT_DOJO_API_TOKEN: ${{ secrets.DEFECT_DOJO_API_TOKEN }}
+          DEFECT_DOJO_API_TOKEN: ${{ secrets.DEFECT_DOJO_API_TOKEN }} 
